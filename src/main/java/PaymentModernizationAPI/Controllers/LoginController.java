@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.json.JSONObject;
 
 /**
  * Controller for login functionality
@@ -16,8 +17,8 @@ public class LoginController {
     private LoginService loginService = new LoginService();
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public boolean login(@RequestHeader(value = "Authorization") String authorization) {
-        return loginService.isValidLogin(authorization);
+    public String login(@RequestHeader(value = "Authorization") String authorization) {
+        return new JSONObject().put("isValid", loginService.isValidLogin(authorization)).toString();
     }
 
 }
