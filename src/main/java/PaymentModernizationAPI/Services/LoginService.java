@@ -1,18 +1,53 @@
 package PaymentModernizationAPI.Services;
 
+import PaymentModernizationAPI.DataAccess.LoginDAO;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Service for login functionality
  */
 @Service
 public class LoginService {
+
+    private LoginDAO loginDAO;
+
     /**
-     * Returns whether the login information provided is valid (matches a user)
-     * @param authInfo User's information: username and password
-     * @return Whether the login is valid or not
+     * Constructor for LoginService
+     * @throws SQLException SQL error when creating LoginService
      */
-    public boolean isValidLogin(String authInfo){
-        return authInfo.equals("valid"); //THIS IS FOR TESTING
+    public LoginService() throws SQLException {
+        loginDAO = new LoginDAO();
+    }
+
+    /**
+     * Returns the JSON authorization information for a user
+     * @param authInfo User's information: username and password
+     * @return JSON information about authorization
+     */
+    public String isValidLogin(String authInfo){
+        // Create the JSON to be returned
+        JSONObject loginJSON = new JSONObject();
+        loginJSON.put("isValid", true);
+        loginJSON.put("authToken", JSONObject.NULL);
+        // Try to decode authentication information and find the auth token
+        try{
+            // Decoding authentication information
+            String decodedInfo = new String(Base64.decodeBase64(authInfo));
+            String username = decodedInfo.substring(0, decodedInfo.indexOf(":"));
+            String password = decodedInfo.substring(decodedInfo.indexOf(":") + 1);
+            // Get info from database for these credentials
+            ResultSet userAuthInfo = loginDAO.getAuthDetails(username, password);
+            userAuthInfo.next();
+            loginJSON.put("authToken", userAuthInfo.getString("auth_token"));
+        } catch(Exception e){
+            loginJSON.put("isValid", false);
+        }
+        // Return JSON
+        return loginJSON.toString();
     }
 }

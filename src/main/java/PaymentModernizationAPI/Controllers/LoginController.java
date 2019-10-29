@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.json.JSONObject;
+
+import java.sql.SQLException;
 
 /**
  * Controller for login functionality
@@ -14,7 +15,15 @@ import org.json.JSONObject;
 @RequestMapping(value = "/Login")
 public class LoginController {
 
-    private LoginService loginService = new LoginService();
+    private LoginService loginService;
+
+    /**
+     * Constructor for LoginController
+     * @throws SQLException SQL error when creating LoginController
+     */
+    public LoginController() throws SQLException{
+        loginService = new LoginService();
+    }
 
     /**
      * Returns information regarding the validity of the provided login information
@@ -22,8 +31,8 @@ public class LoginController {
      * @return Information regarding the validity of the provided login information
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public String login(@RequestHeader(value = "Authorization") String authorization) {
-        return new JSONObject().put("isValid", loginService.isValidLogin(authorization)).toString();
+    public String login(@RequestHeader(value = "Authorization") String authorization){
+        return loginService.isValidLogin(authorization);
     }
 
 }
