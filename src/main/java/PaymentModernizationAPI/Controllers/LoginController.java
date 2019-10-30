@@ -30,7 +30,7 @@ public class LoginController {
      * @param authorization User's information: username and password
      * @return Information regarding the validity of the provided login information
      */
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String login(@RequestHeader(value = "Authorization") String authorization){
         return loginService.isValidLogin(authorization);
     }
