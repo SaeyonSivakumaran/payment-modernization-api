@@ -10,25 +10,56 @@ import java.sql.Statement;
  */
 class DAOManager {
 
+    // Connection variables
+    private static Connection connection;
+    private static Statement statement;
+
     /**
-     * Returns connection to database
-     * @return Connection to database
-     * @throws SQLException Error while getting connection to database
+     * Returns statement for database connection
+     * @return Statement for database connection
      */
-    private static Connection getConnection() throws SQLException {
-        String password = "a7feaaba";
-        String connectionURL = "jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_b8a1f59b8d70fd1";
-        String username = "b9657ba5187062";
-        return DriverManager.getConnection(connectionURL, username, password);
+    static Statement getStatement(){
+        return statement;
     }
 
     /**
-     * Returns database statement
-     * @return Database statement
+     * Resets the connection variable
+     * @throws SQLException Error while getting connection to database
+     */
+    private static void resetConnection() throws SQLException {
+        String password = "a7feaaba";
+        String connectionURL = "jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_b8a1f59b8d70fd1";
+        String username = "b9657ba5187062";
+        connection = DriverManager.getConnection(connectionURL, username, password);
+    }
+
+    /**
+     * Resets the statement variable
      * @throws SQLException Error while getting database statement
      */
-    static Statement getStatement() throws SQLException {
-        return getConnection().createStatement();
+    private static void resetStatement() throws SQLException {
+        statement = connection.createStatement();
+    }
+
+    /**
+     * Resets the connection and statement for new usage
+     * @throws SQLException Error while resetting the connection and statement
+     */
+    static void reset() throws SQLException{
+        close();
+        resetConnection();
+        resetStatement();
+    }
+
+    /**
+     * Closes the connection and statement
+     * @throws SQLException Error while closing the connection and statement
+     */
+    private static void close() throws SQLException{
+        if(statement != null && connection != null){
+            statement.close();
+            connection.close();
+        }
     }
 
 }
