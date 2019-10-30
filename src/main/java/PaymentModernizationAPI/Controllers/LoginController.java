@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * Controller for login functionality
  */
 @RestController
-@RequestMapping(value = "/Login")
+@RequestMapping(value = "/login")
 public class LoginController {
 
     private LoginService loginService;
