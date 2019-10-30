@@ -46,6 +46,7 @@ public class LoginService {
             loginJSON.put("authToken", userAuthInfo.getString("auth_token"));
         } catch(Exception e){
             loginJSON.put("isValid", false);
+            loginJSON.put("errorMsg", e.getMessage());
         }
         // Return JSON
         return loginJSON.toString();
