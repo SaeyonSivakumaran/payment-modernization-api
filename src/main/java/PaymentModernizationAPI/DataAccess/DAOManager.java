@@ -8,7 +8,7 @@ import java.sql.Statement;
 /**
  * DAO for connecting to database
  */
-class DAOManager {
+public class DAOManager {
 
     // Connection variables
     private static Connection connection;
@@ -18,7 +18,7 @@ class DAOManager {
      * Returns statement for database connection
      * @return Statement for database connection
      */
-    static Statement getStatement(){
+    public static Statement getStatement(){
         return statement;
     }
 
@@ -45,7 +45,7 @@ class DAOManager {
      * Resets the connection and statement for new usage
      * @throws SQLException Error while resetting the connection and statement
      */
-    static void reset() throws SQLException{
+    public static void reset() throws SQLException{
         close();
         resetConnection();
         resetStatement();

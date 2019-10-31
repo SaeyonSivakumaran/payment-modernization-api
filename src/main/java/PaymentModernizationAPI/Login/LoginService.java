@@ -1,12 +1,10 @@
-package PaymentModernizationAPI.Services;
+package PaymentModernizationAPI.Login;
 
-import PaymentModernizationAPI.DataAccess.LoginDAO;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * Service for login functionality
@@ -18,9 +16,8 @@ public class LoginService {
 
     /**
      * Constructor for LoginService
-     * @throws SQLException SQL error when creating LoginService
      */
-    public LoginService() throws SQLException {
+    public LoginService(){
         loginDAO = new LoginDAO();
     }
 
@@ -29,7 +26,7 @@ public class LoginService {
      * @param authInfo User's information: username and password
      * @return JSON information about authorization
      */
-    public String isValidLogin(String authInfo){
+    String isValidLogin(String authInfo){
         // Create the JSON to be returned
         JSONObject loginJSON = new JSONObject();
         loginJSON.put("isValid", true);
