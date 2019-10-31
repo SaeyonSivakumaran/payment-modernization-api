@@ -1,6 +1,6 @@
 package PaymentModernizationAPI.Users;
 
-import PaymentModernizationAPI.Payment.BankInformation;
+import PaymentModernizationAPI.Invoices.BankInformation;
 
 /**
  * A company user

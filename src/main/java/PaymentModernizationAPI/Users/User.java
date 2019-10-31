@@ -1,6 +1,6 @@
 package PaymentModernizationAPI.Users;
 
-import PaymentModernizationAPI.Payment.Order;
+import PaymentModernizationAPI.Invoices.Invoice;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class User {
     // User's full name
     private String name;
     // List of invoices connected to this user
-    private ArrayList<Order> orders;
+    private ArrayList<Invoice> invoices;
     // User's type
     private UserTypes type;
 
@@ -36,7 +36,7 @@ public class User {
         this.password = password;
         this.name = name;
         this.type = type;
-        this.orders = new ArrayList<>();
+        this.invoices = new ArrayList<>();
     }
 
     /**
@@ -91,8 +91,8 @@ public class User {
      * Get user's orders
      * @return User's orders
      */
-    public ArrayList<Order> getOrders() {
-        return orders;
+    public ArrayList<Invoice> getInvoices() {
+        return invoices;
     }
 
     /**

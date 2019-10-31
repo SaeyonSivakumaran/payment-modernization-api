@@ -1,7 +1,7 @@
 package PaymentModernizationAPI.Signup;
 
 import PaymentModernizationAPI.DataAccess.DAOManager;
-import PaymentModernizationAPI.Payment.BankInformation;
+import PaymentModernizationAPI.Invoices.BankInformation;
 import PaymentModernizationAPI.Users.Address;
 import PaymentModernizationAPI.Users.Company;
 import PaymentModernizationAPI.Users.User;

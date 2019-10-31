@@ -1,6 +1,6 @@
 package PaymentModernizationAPI.Signup;
 
-import PaymentModernizationAPI.Payment.BankInformation;
+import PaymentModernizationAPI.Invoices.BankInformation;
 import PaymentModernizationAPI.Users.Address;
 import PaymentModernizationAPI.Users.Company;
 import PaymentModernizationAPI.Users.User;
@@ -8,8 +8,6 @@ import PaymentModernizationAPI.Users.User;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.SQLException;
 
 /**
  * Controller for sign up functionality

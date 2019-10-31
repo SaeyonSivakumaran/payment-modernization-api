@@ -1,4 +1,4 @@
-package PaymentModernizationAPI.Payment;
+package PaymentModernizationAPI.Invoices;
 
 /**
  * A class representing a user's bank information

@@ -1,9 +1,9 @@
-package PaymentModernizationAPI.Payment;
+package PaymentModernizationAPI.Invoices;
 
 /**
  * An item in an order
  */
-public class OrderItem {
+public class InvoiceItem {
 
     // Information about the item being ordered
     private int quantity;
