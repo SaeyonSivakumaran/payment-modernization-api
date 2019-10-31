@@ -58,7 +58,6 @@ public class SignupService {
             }
         } catch(SQLException e){
             signupJSON.put("isValid", false);
-            signupJSON.put("errorMsg", e.getMessage());
         }
         return signupJSON.toString();
     }
