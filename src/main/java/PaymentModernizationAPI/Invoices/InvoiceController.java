@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
+
 /**
  * Controller for invoices
  */
@@ -27,7 +29,7 @@ public class InvoiceController {
      * @return All invoices associated with a specific user
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String invoices(@RequestHeader(value = "Authorization") String authorization){
+    public String invoices(@RequestHeader(value = "Authorization") String authorization) {
         return invoiceService.invoices(authorization);
     }
 
