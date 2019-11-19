@@ -1,6 +1,5 @@
 package PaymentModernizationAPI.Login;
 
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * Service for invoices
@@ -31,12 +30,9 @@ public class InvoiceService {
     String invoices(String authorization){
         // Create the JSON to be returned
         JSONObject invoiceJSON = new JSONObject();
-        invoiceJSON.put("isValid", true);
         invoiceJSON.put("invoices", JSONObject.NULL);
         // Try to get invoices for the user
         try{
-            // Getting the user's type
-            String userType = getUserType(authorization);
             // Getting the invoice information
             ResultSet invoices = invoiceDAO.invoices(authorization);
             // Continuing if at least one invoice is returned
@@ -49,19 +45,9 @@ public class InvoiceService {
                     tempInvoiceJSON.put("invoiceDate", JSONObject.NULL);
                     tempInvoiceJSON.put("deliveryDate", JSONObject.NULL);
                     tempInvoiceJSON.put("paymentDate", JSONObject.NULL);
-                    // Add other user's information based on who this user is
-                    switch (userType){
-                        case "DELIVERY_PERSON":
-                            tempInvoiceJSON.put("supplier", invoices.getString("supplier_name"));
-                            tempInvoiceJSON.put("business", invoices.getString("business_name"));
-                            break;
-                        case "SMALL_BUSINESS":
-                            tempInvoiceJSON.put("supplier", invoices.getString("supplier_name"));
-                            break;
-                        case "SUPPLIER":
-                            tempInvoiceJSON.put("business", invoices.getString("business_name"));
-                            break;
-                    }
+                    // Add other user's information
+                    tempInvoiceJSON.put("supplier", invoices.getString("supplier_name"));
+                    tempInvoiceJSON.put("business", invoices.getString("business_name"));
                     // Adding the dates if they exist
                     if(invoices.getString("invoice_date") != null){
                         tempInvoiceJSON.put("invoiceDate", invoices.getString("invoice_date"));
@@ -76,12 +62,9 @@ public class InvoiceService {
                     invoicesJSON.put(tempInvoiceJSON);
                 }
                 invoiceJSON.put("invoices", invoicesJSON);
-            } else {
-                invoiceJSON.put("isValid", false);
             }
         } catch(Exception e){
-            System.out.println(e.getMessage());
-            invoiceJSON.put("isValid", false);
+            invoiceJSON.put("invoices", JSONObject.NULL);
         }
         // Return JSON
         return invoiceJSON.toString();

@@ -39,7 +39,6 @@ public class LoginService {
             String password = decodedInfo.substring(decodedInfo.indexOf(":") + 1);
             // Get info from database for these credentials
             ResultSet userAuthInfo = loginDAO.getAuthDetails(username, password);
-            String authToken;
             userAuthInfo.next();
             loginJSON.put("authToken", userAuthInfo.getString("auth_token"));
             loginJSON.put("userType", userAuthInfo.getString("user_type"));
