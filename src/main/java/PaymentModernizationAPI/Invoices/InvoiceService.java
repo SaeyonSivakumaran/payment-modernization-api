@@ -46,6 +46,9 @@ public class InvoiceService {
                 // Looping through the invoices
                 while(invoices.next()){
                     JSONObject tempInvoiceJSON = new JSONObject();
+                    tempInvoiceJSON.put("invoiceDate", JSONObject.NULL);
+                    tempInvoiceJSON.put("deliveryDate", JSONObject.NULL);
+                    tempInvoiceJSON.put("paymentDate", JSONObject.NULL);
                     // Add other user's information based on who this user is
                     switch (userType){
                         case "DELIVERY_PERSON":
@@ -59,9 +62,16 @@ public class InvoiceService {
                             tempInvoiceJSON.put("business", invoices.getString("business_name"));
                             break;
                     }
-                    tempInvoiceJSON.put("invoiceDate", invoices.getString("invoice_date"));
-                    tempInvoiceJSON.put("deliveryDate", invoices.getString("delivery_date"));
-                    tempInvoiceJSON.put("paymentDate", invoices.getString("payment_date"));
+                    // Adding the dates if they exist
+                    if(invoices.getString("invoice_date") != null){
+                        tempInvoiceJSON.put("invoiceDate", invoices.getString("invoice_date"));
+                    }
+                    if(invoices.getString("delivery_date") != null){
+                        tempInvoiceJSON.put("deliveryDate", invoices.getString("delivery_date"));
+                    }
+                    if(invoices.getString("payment_date") != null){
+                        tempInvoiceJSON.put("paymentDate", invoices.getString("payment_date"));
+                    }
                     tempInvoiceJSON.put("status", invoices.getString("status"));
                     invoicesJSON.put(tempInvoiceJSON);
                 }
