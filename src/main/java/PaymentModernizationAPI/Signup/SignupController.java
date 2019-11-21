@@ -20,12 +20,13 @@ public class SignupController {
     /**
      * Constructor for SignupController
      */
-    SignupController(){
+    SignupController() {
         this.signupService = new SignupService();
     }
 
     /**
      * Returns information outlining whether the sign up was successful
+     *
      * @param userMap Sign up form information
      * @return Information outlining whether the sign up was successful
      */
@@ -43,6 +44,7 @@ public class SignupController {
 
     /**
      * Returns information outlining whether the sign up was successful
+     *
      * @param companyMap Sign up form information
      * @return Information outlining whether the sign up was successful
      */

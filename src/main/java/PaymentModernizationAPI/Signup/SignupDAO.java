@@ -17,6 +17,7 @@ public class SignupDAO {
 
     /**
      * Returns number of affected rows when inserting a user
+     *
      * @param user User to be inserted
      * @return Number of affected rows
      * @throws SQLException Error while inserting user
@@ -30,16 +31,17 @@ public class SignupDAO {
 
     /**
      * Returns number of affected rows when inserting a company
+     *
      * @param company Company to be inserted
      * @return Number of affected rows
      * @throws SQLException Error while inserting company
      */
-    int signupCompany(Company company) throws SQLException{
+    int signupCompany(Company company) throws SQLException {
         DAOManager.reset();
         BankInformation bankInfo = company.getBankInfo();
         Address address = company.getAddress();
         String signupQuery = String.format("CALL insert_company('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', " +
-                "'%s', '%s', '%s', '%s', '%s');", company.getUsername(), company.getPassword(),
+                        "'%s', '%s', '%s', '%s', '%s');", company.getUsername(), company.getPassword(),
                 company.getAuthToken(), company.getName(), company.getType().toString(), bankInfo.getAccountNum(),
                 bankInfo.getCardNum(), bankInfo.getBank().toString(), address.getStreetAddress(), address.getCity(),
                 address.getRegion(), address.getCountry(), address.getPostalCode());

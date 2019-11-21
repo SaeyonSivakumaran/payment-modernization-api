@@ -17,22 +17,23 @@ public class LoginService {
     /**
      * Constructor for LoginService
      */
-    public LoginService(){
+    public LoginService() {
         loginDAO = new LoginDAO();
     }
 
     /**
      * Returns the JSON authorization information for a user
+     *
      * @param authInfo User's information: username and password
      * @return JSON information about authorization
      */
-    String isValidLogin(String authInfo){
+    String isValidLogin(String authInfo) {
         // Create the JSON to be returned
         JSONObject loginJSON = new JSONObject();
         loginJSON.put("isValid", true);
         loginJSON.put("authToken", JSONObject.NULL);
         // Try to decode authentication information and find the auth token
-        try{
+        try {
             // Decoding authentication information
             String decodedInfo = new String(Base64.decodeBase64(authInfo));
             String username = decodedInfo.substring(0, decodedInfo.indexOf(":"));
@@ -42,7 +43,7 @@ public class LoginService {
             userAuthInfo.next();
             loginJSON.put("authToken", userAuthInfo.getString("auth_token"));
             loginJSON.put("userType", userAuthInfo.getString("user_type"));
-        } catch(Exception e){
+        } catch (Exception e) {
             loginJSON.put("isValid", false);
         }
         // Return JSON

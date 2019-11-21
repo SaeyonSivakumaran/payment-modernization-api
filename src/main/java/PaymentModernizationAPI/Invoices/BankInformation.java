@@ -11,17 +11,18 @@ public class BankInformation {
     private Banks bank;
 
     // Enum for supported banks
-    public enum Banks{
+    public enum Banks {
         SCOTIABANK, RBC, CIBC, TD, BMO
     }
 
     /**
      * Constructor for BankInformation
+     *
      * @param accountNum Account number
-     * @param cardNum Card number
-     * @param bank Bank
+     * @param cardNum    Card number
+     * @param bank       Bank
      */
-    public BankInformation(String accountNum, String cardNum, Banks bank){
+    public BankInformation(String accountNum, String cardNum, Banks bank) {
         this.accountNum = accountNum;
         this.cardNum = cardNum;
         this.bank = bank;
@@ -29,6 +30,7 @@ public class BankInformation {
 
     /**
      * Get account number
+     *
      * @return Account number
      */
     public String getAccountNum() {
@@ -37,6 +39,7 @@ public class BankInformation {
 
     /**
      * Set account number
+     *
      * @param accountNum New account number
      */
     public void setAccountNum(String accountNum) {
@@ -45,6 +48,7 @@ public class BankInformation {
 
     /**
      * Get card number
+     *
      * @return Card number
      */
     public String getCardNum() {
@@ -53,6 +57,7 @@ public class BankInformation {
 
     /**
      * Set card number
+     *
      * @param cardNum New card number
      */
     public void setCardNum(String cardNum) {
@@ -61,6 +66,7 @@ public class BankInformation {
 
     /**
      * Get bank
+     *
      * @return Bank
      */
     public Banks getBank() {
@@ -69,6 +75,7 @@ public class BankInformation {
 
     /**
      * Set bank
+     *
      * @param bank Bank
      */
     public void setBank(Banks bank) {

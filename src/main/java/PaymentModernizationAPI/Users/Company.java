@@ -5,7 +5,7 @@ import PaymentModernizationAPI.Invoices.BankInformation;
 /**
  * A company user
  */
-public class Company extends User{
+public class Company extends User {
 
     // Company's banking information
     private BankInformation bankInfo;
@@ -14,13 +14,14 @@ public class Company extends User{
 
     /**
      * Constructor for Company
+     *
      * @param username Username
      * @param password Password
-     * @param type Type
+     * @param type     Type
      * @param bankInfo Banking information
-     * @param address Address
+     * @param address  Address
      */
-    public Company(String username, String password, String name, UserTypes type, BankInformation bankInfo, Address address){
+    public Company(String username, String password, String name, UserTypes type, BankInformation bankInfo, Address address) {
         super(username, password, name, type);
         this.bankInfo = bankInfo;
         this.address = address;
@@ -28,6 +29,7 @@ public class Company extends User{
 
     /**
      * Get company's banking information
+     *
      * @return Company's banking information
      */
     public BankInformation getBankInfo() {
@@ -36,6 +38,7 @@ public class Company extends User{
 
     /**
      * Set company's banking information
+     *
      * @param bankInfo New banking information
      */
     public void setBankInfo(BankInformation bankInfo) {
@@ -44,6 +47,7 @@ public class Company extends User{
 
     /**
      * Get company's address
+     *
      * @return Company's address
      */
     public Address getAddress() {
@@ -52,6 +56,7 @@ public class Company extends User{
 
     /**
      * Set company's address
+     *
      * @param address New address
      */
     public void setAddress(Address address) {

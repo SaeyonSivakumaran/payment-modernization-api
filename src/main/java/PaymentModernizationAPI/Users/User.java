@@ -27,11 +27,12 @@ public class User {
 
     /**
      * Constructor for user
+     *
      * @param username Username
      * @param password Password
-     * @param type Type
+     * @param type     Type
      */
-    public User(String username, String password, String name, UserTypes type){
+    public User(String username, String password, String name, UserTypes type) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -41,6 +42,7 @@ public class User {
 
     /**
      * Get user's username
+     *
      * @return User's username
      */
     public String getUsername() {
@@ -49,6 +51,7 @@ public class User {
 
     /**
      * Set user's username
+     *
      * @param username New username
      */
     public void setUsername(String username) {
@@ -57,6 +60,7 @@ public class User {
 
     /**
      * Get user's password
+     *
      * @return User's password
      */
     public String getPassword() {
@@ -65,6 +69,7 @@ public class User {
 
     /**
      * Set user's password
+     *
      * @param password New password
      */
     public void setPassword(String password) {
@@ -73,6 +78,7 @@ public class User {
 
     /**
      * Get user's auth token
+     *
      * @return User's auth token
      */
     public String getAuthToken() {
@@ -81,6 +87,7 @@ public class User {
 
     /**
      * Set user's auth token
+     *
      * @param authToken New auth token
      */
     public void setAuthToken(String authToken) {
@@ -89,6 +96,7 @@ public class User {
 
     /**
      * Get user's orders
+     *
      * @return User's orders
      */
     public ArrayList<Invoice> getInvoices() {
@@ -97,6 +105,7 @@ public class User {
 
     /**
      * Get user's type
+     *
      * @return User's type
      */
     public UserTypes getType() {
@@ -105,6 +114,7 @@ public class User {
 
     /**
      * Set user's type
+     *
      * @param type New type
      */
     public void setType(UserTypes type) {
@@ -113,6 +123,7 @@ public class User {
 
     /**
      * Get user's name
+     *
      * @return User's name
      */
     public String getName() {
@@ -121,6 +132,7 @@ public class User {
 
     /**
      * Set user's name
+     *
      * @param name New name
      */
     public void setName(String name) {

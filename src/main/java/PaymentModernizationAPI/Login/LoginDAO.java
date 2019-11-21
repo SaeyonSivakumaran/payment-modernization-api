@@ -14,12 +14,13 @@ public class LoginDAO {
 
     /**
      * Returns data for a specific username and password
+     *
      * @param username Username
      * @param password Password
      * @return Info from table for the username and password
      * @throws SQLException Error when retrieving details
      */
-    ResultSet getAuthDetails(String username, String password) throws SQLException{
+    ResultSet getAuthDetails(String username, String password) throws SQLException {
         DAOManager.reset();
         String infoQuery = String.format("SELECT auth_token, user_type FROM heroku_b8a1f59b8d70fd1.users " +
                 "WHERE user_name='%s' AND password='%s';", username, password);

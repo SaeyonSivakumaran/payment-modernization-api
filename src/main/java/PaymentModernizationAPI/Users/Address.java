@@ -14,11 +14,12 @@ public class Address {
 
     /**
      * Constructor for Address
+     *
      * @param streetAddress Street address
-     * @param city City
-     * @param region Region
-     * @param country Country
-     * @param postalCode Postal code
+     * @param city          City
+     * @param region        Region
+     * @param country       Country
+     * @param postalCode    Postal code
      */
     public Address(String streetAddress, String city, String region, String country, String postalCode) {
         this.streetAddress = streetAddress;
@@ -30,6 +31,7 @@ public class Address {
 
     /**
      * Get street address
+     *
      * @return Street address
      */
     public String getStreetAddress() {
@@ -38,6 +40,7 @@ public class Address {
 
     /**
      * Set street address
+     *
      * @param streetAddress New street address
      */
     public void setStreetAddress(String streetAddress) {
@@ -46,6 +49,7 @@ public class Address {
 
     /**
      * Get city
+     *
      * @return City
      */
     public String getCity() {
@@ -54,6 +58,7 @@ public class Address {
 
     /**
      * Set city
+     *
      * @param city New city
      */
     public void setCity(String city) {
@@ -62,6 +67,7 @@ public class Address {
 
     /**
      * Get region
+     *
      * @return Region
      */
     public String getRegion() {
@@ -70,6 +76,7 @@ public class Address {
 
     /**
      * Set region
+     *
      * @param region New region
      */
     public void setRegion(String region) {
@@ -78,6 +85,7 @@ public class Address {
 
     /**
      * Get country
+     *
      * @return Country
      */
     public String getCountry() {
@@ -86,6 +94,7 @@ public class Address {
 
     /**
      * Set country
+     *
      * @param country New country
      */
     public void setCountry(String country) {
@@ -94,6 +103,7 @@ public class Address {
 
     /**
      * Get postal code
+     *
      * @return Postal code
      */
     public String getPostalCode() {
@@ -102,6 +112,7 @@ public class Address {
 
     /**
      * Set postal code
+     *
      * @param postalCode New postal code
      */
     public void setPostalCode(String postalCode) {
