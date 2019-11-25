@@ -66,7 +66,6 @@ public class InvoiceController {
             String deliveryPerson = invoiceMap.get("deliveryPerson").get(0);
             Date invoiceDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(invoiceMap.get("invoiceDate").get(0));
             Date dueDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(invoiceMap.get("dueDate").get(0));
-            Invoice.InvoiceStatus status = Invoice.InvoiceStatus.valueOf(invoiceMap.get("status").get(0));
             // Getting the invoice items
             JSONArray items = new JSONObject(invoiceMap.get("items").get(0)).getJSONArray("items");
             ArrayList<InvoiceItem> invoiceItems = new ArrayList<>();
@@ -75,7 +74,7 @@ public class InvoiceController {
                 invoiceItems.add(new InvoiceItem(item.getInt("quantity"), item.getString("description"), item.getDouble("price")));
             }
             // Creating the invoice
-            Invoice invoice = new Invoice(authorization, business, deliveryPerson, invoiceDate, dueDate, status);
+            Invoice invoice = new Invoice(authorization, business, deliveryPerson, invoiceDate, dueDate, Invoice.InvoiceStatus.valueOf("NEW"));
             invoice.setItems(invoiceItems);
             return invoiceService.createInvoice(authorization, invoice);
         } catch (Exception e) {
