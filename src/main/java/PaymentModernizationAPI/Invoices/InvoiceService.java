@@ -59,19 +59,46 @@ public class InvoiceService {
     String getInvoice(String authorization, String invoiceId) {
         // Try to get the invoice
         try {
-            // Create the JSON to be returned
-            JSONObject invoiceJSON = new JSONObject();
             // Getting the invoice information
             ResultSet invoice = invoiceDAO.getInvoice(authorization, invoiceId);
             invoice.next();
             // Adding invoice information to JSON
             JSONArray invoicesJSON = retrieveInvoiceInfo(invoice);
-            invoiceJSON = invoicesJSON.getJSONObject(0);
+            JSONObject invoiceJSON = invoicesJSON.getJSONObject(0);
             invoiceJSON.put("items", getInvoiceItems(authorization, invoiceId));
             return invoiceJSON.toString();
         } catch (Exception e) {
             return new JSONObject().put("invoice", JSONObject.NULL).toString();
         }
+    }
+
+    /**
+     * Returns whether an invoice was created successfully or not
+     *
+     * @param authorization User's auth token
+     * @param invoice       Invoice information
+     * @return Whether an invoice was created successfully or not
+     */
+    String createInvoice(String authorization, Invoice invoice) {
+        JSONObject creationJSON = new JSONObject();
+        creationJSON.put("isValid", true);
+        try {
+            // Creating an invoice
+            ResultSet invoiceIdResultSet = invoiceDAO.createInvoice(authorization, invoice);
+            invoiceIdResultSet.next();
+            String invoiceId = invoiceIdResultSet.getString("last_insert_id()");
+            // Adding the invoice's items
+            for (InvoiceItem item : invoice.getItems()) {
+                item.setInvoiceId(invoiceId);
+                if (invoiceDAO.addInvoiceItem(item) <= 0) {
+                    creationJSON.put("isValid", false);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            creationJSON.put("isValid", false);
+        }
+        return creationJSON.toString();
     }
 
     /**

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 /**
  * DAO for invoices
@@ -64,6 +65,39 @@ public class InvoiceDAO {
         DAOManager.reset();
         String invoiceItemQuery = String.format("CALL get_invoice_items('%s', '%s');", authorization, invoiceId);
         return DAOManager.getStatement().executeQuery(invoiceItemQuery);
+    }
+
+    /**
+     * Create invoice and return ID of invoice created
+     *
+     * @param authorization User's auth token
+     * @param invoice       Invoice information
+     * @return ID of invoice created
+     * @throws SQLException Error while creating a new invoice
+     */
+    ResultSet createInvoice(String authorization, Invoice invoice) throws SQLException {
+        DAOManager.reset();
+        String invoiceDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(invoice.getInvoiceDate());
+        String dueDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(invoice.getDueDate());
+        String createQuery = String.format("CALL insert_invoice_info('%s', '%s', '%s', '%s', '%s', '%s');",
+                authorization, invoice.getSmallBusiness(), invoice.getDeliveryPerson(), invoiceDate, dueDate,
+                invoice.getStatus().toString());
+        return DAOManager.getStatement().executeQuery(createQuery);
+    }
+
+    /**
+     * Add an item to a specific invoice
+     *
+     * @param item          Item to be added to the invoice
+     * @return Number of rows affected
+     * @throws SQLException Error while adding item to the invoice
+     */
+    int addInvoiceItem(InvoiceItem item) throws SQLException {
+        DAOManager.reset();
+        String addItemQuery = String.format("CALL insert_invoice_items('%s', '%s', '%s', '%s');",
+                item.getInvoiceId(), item.getDescription(), String.valueOf(item.getQuantity()),
+                String.valueOf(item.getPrice()));
+        return DAOManager.getStatement().executeUpdate(addItemQuery);
     }
 
 }
