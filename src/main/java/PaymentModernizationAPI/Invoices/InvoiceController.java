@@ -47,7 +47,7 @@ public class InvoiceController {
     @RequestMapping(value = "/{invoiceId}", method = RequestMethod.GET)
     public String getInvoice(@RequestHeader(value = "Authorization") String authorization,
                              @PathVariable(value = "invoiceId") String invoiceId) {
-        return invoiceService.getInvoice(authorization, invoiceId);
+        return invoiceService.getInvoice(authorization, invoiceId).toString();
     }
 
     /**

@@ -27,6 +27,18 @@ public class InvoiceDAO {
     }
 
     /**
+     * Returns the IDs of all invoices related to a certain user
+     * @param authorization User's auth token
+     * @return IDs of all invoices related to the user
+     * @throws SQLException Error while retrieving invoice IDs
+     */
+    ResultSet getInvoiceIDs(String authorization) throws SQLException {
+        DAOManager.reset();
+        String idQuery = String.format("CALL get_invoice_ids('%s');", authorization);
+        return DAOManager.getStatement().executeQuery(idQuery);
+    }
+
+    /**
      * Returns type of a user from the database
      *
      * @param authorization User's auth token

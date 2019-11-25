@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Service for invoices
@@ -31,22 +32,26 @@ public class InvoiceService {
      */
     String invoices(String authorization) {
         // Create the JSON to be returned
-        JSONObject invoiceJSON = new JSONObject();
-        invoiceJSON.put("invoices", JSONObject.NULL);
-        // Try to get invoices for the user
+        JSONObject invoicesJSON = new JSONObject();
+        invoicesJSON.put("invoices", JSONObject.NULL);
+        // Try to get the invoices for the user
         try {
-            // Getting the invoice information
-            ResultSet invoices = invoiceDAO.invoices(authorization);
-            // Continuing if at least one invoice is returned
-            if (invoices.next()) {
-                JSONArray invoicesJSON = retrieveInvoiceInfo(invoices);
-                invoiceJSON.put("invoices", invoicesJSON);
+            JSONArray invoices = new JSONArray();
+            // Getting the IDs of all invoices related to this user
+            ResultSet invoiceIdResultSet = invoiceDAO.getInvoiceIDs(authorization);
+            ArrayList<String> invoiceIds = new ArrayList<>();
+            while(invoiceIdResultSet.next()){
+                invoiceIds.add(invoiceIdResultSet.getString("id"));
             }
+            // Adding each invoice to the JSON
+            for(String id : invoiceIds){
+                invoices.put(getInvoice(authorization, id));
+            }
+            invoicesJSON.put("invoices", invoices);
         } catch (Exception e) {
-            invoiceJSON.put("invoices", JSONObject.NULL);
+            invoicesJSON.put("invoices", JSONObject.NULL);
         }
-        // Return JSON
-        return invoiceJSON.toString();
+        return invoicesJSON.toString();
     }
 
     /**
@@ -56,7 +61,7 @@ public class InvoiceService {
      * @param invoiceId     Invoice ID
      * @return Information for a specific invoice
      */
-    String getInvoice(String authorization, String invoiceId) {
+    JSONObject getInvoice(String authorization, String invoiceId) {
         // Try to get the invoice
         try {
             // Getting the invoice information
@@ -66,9 +71,9 @@ public class InvoiceService {
             JSONArray invoicesJSON = retrieveInvoiceInfo(invoice);
             JSONObject invoiceJSON = invoicesJSON.getJSONObject(0);
             invoiceJSON.put("items", getInvoiceItems(authorization, invoiceId));
-            return invoiceJSON.toString();
+            return invoiceJSON;
         } catch (Exception e) {
-            return new JSONObject().put("invoice", JSONObject.NULL).toString();
+            return new JSONObject().put("invoice", JSONObject.NULL);
         }
     }
 
@@ -125,6 +130,9 @@ public class InvoiceService {
             // Adding the dates if they exist
             if (invoices.getString("invoice_date") != null) {
                 tempInvoiceJSON.put("invoiceDate", invoices.getString("invoice_date"));
+            }
+            if (invoices.getString("due_date") != null) {
+                tempInvoiceJSON.put("dueDate", invoices.getString("due_date"));
             }
             if (invoices.getString("delivery_date") != null) {
                 tempInvoiceJSON.put("deliveryDate", invoices.getString("delivery_date"));
