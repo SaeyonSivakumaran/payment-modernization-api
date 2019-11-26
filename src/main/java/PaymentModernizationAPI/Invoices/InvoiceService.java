@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,11 +39,11 @@ public class InvoiceService {
             // Getting the IDs of all invoices related to this user
             ResultSet invoiceIdResultSet = invoiceDAO.getInvoiceIDs(authorization);
             ArrayList<String> invoiceIds = new ArrayList<>();
-            while(invoiceIdResultSet.next()){
+            while (invoiceIdResultSet.next()) {
                 invoiceIds.add(invoiceIdResultSet.getString("id"));
             }
             // Adding each invoice to the JSON
-            for(String id : invoiceIds){
+            for (String id : invoiceIds) {
                 invoices.put(getInvoice(authorization, id));
             }
             invoicesJSON.put("invoices", invoices);

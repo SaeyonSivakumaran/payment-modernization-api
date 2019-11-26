@@ -14,20 +14,8 @@ import java.text.SimpleDateFormat;
 public class InvoiceDAO {
 
     /**
-     * Returns data regarding all invoices related to a user
-     *
-     * @param authorization User's auth token
-     * @return Data regarding all invoices related to a user
-     * @throws SQLException Error while retrieving invoice information
-     */
-    ResultSet invoices(String authorization) throws SQLException {
-        DAOManager.reset();
-        String invoiceQuery = String.format("CALL get_brief_invoices('%s');", authorization);
-        return DAOManager.getStatement().executeQuery(invoiceQuery);
-    }
-
-    /**
      * Returns the IDs of all invoices related to a certain user
+     *
      * @param authorization User's auth token
      * @return IDs of all invoices related to the user
      * @throws SQLException Error while retrieving invoice IDs
@@ -100,7 +88,7 @@ public class InvoiceDAO {
     /**
      * Add an item to a specific invoice
      *
-     * @param item          Item to be added to the invoice
+     * @param item Item to be added to the invoice
      * @return Number of rows affected
      * @throws SQLException Error while adding item to the invoice
      */

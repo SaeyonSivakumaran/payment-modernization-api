@@ -43,6 +43,7 @@ public class LoginService {
             userAuthInfo.next();
             loginJSON.put("authToken", userAuthInfo.getString("auth_token"));
             loginJSON.put("userType", userAuthInfo.getString("user_type"));
+            loginJSON.put("fullName", userAuthInfo.getString("full_name"));
         } catch (Exception e) {
             loginJSON.put("isValid", false);
         }

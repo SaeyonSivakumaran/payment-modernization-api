@@ -22,7 +22,7 @@ public class LoginDAO {
      */
     ResultSet getAuthDetails(String username, String password) throws SQLException {
         DAOManager.reset();
-        String infoQuery = String.format("SELECT auth_token, user_type FROM heroku_b8a1f59b8d70fd1.users " +
+        String infoQuery = String.format("SELECT auth_token, user_type, full_name FROM heroku_b8a1f59b8d70fd1.users " +
                 "WHERE user_name='%s' AND password='%s';", username, password);
         return DAOManager.getStatement().executeQuery(infoQuery);
     }
