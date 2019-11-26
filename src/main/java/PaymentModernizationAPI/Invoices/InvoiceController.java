@@ -80,7 +80,21 @@ public class InvoiceController {
         } catch (Exception e) {
             return invoiceService.createInvoice(authorization, null);
         }
+    }
 
+    /**
+     * Update status of an existing invoice
+     *
+     * @param authorization User's auth token
+     * @param statusMap     Status information
+     * @param invoiceId     Invoice ID
+     * @return Whether status change was successful or not
+     */
+    @RequestMapping(value = "/{invoiceId}/update-status", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String changeStatus(@RequestHeader(value = "Authorization") String authorization,
+                               @RequestBody MultiValueMap<String, String> statusMap,
+                               @PathVariable(value = "invoiceId") String invoiceId) {
+        return invoiceService.changeStatus(authorization, invoiceId, statusMap.get("newStatus").get(0));
     }
 
 }

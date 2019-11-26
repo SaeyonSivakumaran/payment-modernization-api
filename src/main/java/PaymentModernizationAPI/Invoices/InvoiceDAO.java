@@ -100,4 +100,19 @@ public class InvoiceDAO {
         return DAOManager.getStatement().executeUpdate(addItemQuery);
     }
 
+    /**
+     * Change status of an invoice
+     * @param authorization User's auth token
+     * @param invoiceId Invoice ID
+     * @param status New status
+     * @return Number of rows affected
+     * @throws SQLException Error while changing status
+     */
+    int changeStatus(String authorization, String invoiceId, String status) throws SQLException{
+        DAOManager.reset();
+        String changeStatusQuery = String.format("CALL update_status('%s', '%s', '%s');",
+                authorization, invoiceId, status);
+        return DAOManager.getStatement().executeUpdate(changeStatusQuery);
+    }
+
 }

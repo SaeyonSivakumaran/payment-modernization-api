@@ -1,5 +1,6 @@
 package PaymentModernizationAPI.Invoices;
 
+import org.apache.commons.lang3.EnumUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -103,6 +104,30 @@ public class InvoiceService {
             creationJSON.put("isValid", false);
         }
         return creationJSON.toString();
+    }
+
+    /**
+     * Change the status of an invoice
+     * @param authorization User's auth token
+     * @param invoiceId Invoice ID
+     * @param status New status
+     * @return Whether the status update was successful or not
+     */
+    String changeStatus(String authorization, String invoiceId, String status) {
+        JSONObject changedJSON = new JSONObject();
+        changedJSON.put("isValid", false);
+        // Checking if the status is valid
+        if(EnumUtils.isValidEnum(Invoice.InvoiceStatus.class, status)){
+            // Changing the status
+            try{
+                if(invoiceDAO.changeStatus(authorization, invoiceId, status) > 0){
+                    changedJSON.put("isValid", true);
+                }
+            } catch(Exception e){
+                changedJSON.put("isValid", false);
+            }
+        }
+        return changedJSON.toString();
     }
 
     /**
