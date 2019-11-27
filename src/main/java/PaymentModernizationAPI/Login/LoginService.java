@@ -31,7 +31,6 @@ public class LoginService {
         // Create the JSON to be returned
         JSONObject loginJSON = new JSONObject();
         loginJSON.put("isValid", true);
-        loginJSON.put("authToken", JSONObject.NULL);
         // Try to decode authentication information and find the auth token
         try {
             // Decoding authentication information
@@ -44,6 +43,13 @@ public class LoginService {
             loginJSON.put("authToken", userAuthInfo.getString("auth_token"));
             loginJSON.put("userType", userAuthInfo.getString("user_type"));
             loginJSON.put("fullName", userAuthInfo.getString("full_name"));
+            loginJSON.put("bankNum", userAuthInfo.getString("bank_num"));
+            loginJSON.put("bank", userAuthInfo.getString("bank"));
+            loginJSON.put("streetAddress", userAuthInfo.getString("street_address"));
+            loginJSON.put("city", userAuthInfo.getString("city"));
+            loginJSON.put("region", userAuthInfo.getString("region"));
+            loginJSON.put("country", userAuthInfo.getString("country"));
+            loginJSON.put("postalCode", userAuthInfo.getString("postal_code"));
         } catch (Exception e) {
             loginJSON.put("isValid", false);
         }
