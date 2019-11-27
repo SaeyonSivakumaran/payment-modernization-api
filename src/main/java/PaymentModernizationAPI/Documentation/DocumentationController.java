@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
  * Controller for documentation
  */
 @RestController
-@RequestMapping("/api-docs")
+@RequestMapping("")
 public class DocumentationController {
 
     /**
