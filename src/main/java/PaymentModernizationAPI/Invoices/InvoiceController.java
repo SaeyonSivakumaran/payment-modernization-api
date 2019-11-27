@@ -90,7 +90,7 @@ public class InvoiceController {
      * @param invoiceId     Invoice ID
      * @return Whether status change was successful or not
      */
-    @RequestMapping(value = "/{invoiceId}/update-status", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(value = "/update-status/{invoiceId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String changeStatus(@RequestHeader(value = "Authorization") String authorization,
                                @RequestBody MultiValueMap<String, String> statusMap,
                                @PathVariable(value = "invoiceId") String invoiceId) {
