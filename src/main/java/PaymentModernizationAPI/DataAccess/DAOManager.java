@@ -33,6 +33,7 @@ public class DAOManager {
         String connectionURL = "jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_b8a1f59b8d70fd1";
         String username = "b9657ba5187062";
         connection = DriverManager.getConnection(connectionURL, username, password);
+        System.out.println("New Connection Created");
     }
 
     /**
@@ -42,6 +43,7 @@ public class DAOManager {
      */
     private static void resetStatement() throws SQLException {
         statement = connection.createStatement();
+        System.out.println("New Statement Created");
     }
 
     /**
