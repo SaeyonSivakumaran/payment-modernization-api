@@ -24,14 +24,12 @@ public class InvoiceDAO {
     ResultSet getInvoices(String authorization) throws SQLException {
         DAOManager.reset();
         String invoicesQuery = String.format("CALL get_invoices('%s');", authorization);
-        System.out.println(String.format("%s: InvoiceDAO - getInvoices()", authorization));
         return DAOManager.getStatement().executeQuery(invoicesQuery);
     }
 
     ResultSet getAllItems() throws SQLException {
         DAOManager.reset();
         String itemsQuery = String.format("SELECT * FROM invoice_items;");
-        System.out.println("InvoiceDAO - getAllItems()");
         return DAOManager.getStatement().executeQuery(itemsQuery);
     }
 
@@ -45,7 +43,6 @@ public class InvoiceDAO {
     ResultSet getInvoiceIDs(String authorization) throws SQLException {
         DAOManager.reset();
         String idQuery = String.format("CALL get_invoice_ids('%s');", authorization);
-        System.out.println(String.format("%s: InvoiceDAO - getInvoiceIDs()", authorization));
         return DAOManager.getStatement().executeQuery(idQuery);
     }
 
@@ -59,7 +56,6 @@ public class InvoiceDAO {
     ResultSet userType(String authorization) throws SQLException {
         DAOManager.reset();
         String typeQuery = String.format("SELECT user_type FROM users WHERE auth_token='%s'", authorization);
-        System.out.println(String.format("%s: InvoiceDAO - userType()", authorization));
         return DAOManager.getStatement().executeQuery(typeQuery);
     }
 
