@@ -42,7 +42,7 @@ public class InvoiceService {
             JSONArray invoicesArray = retrieveInvoiceInfo(invoices);
             invoices.close();
             // Adding items to the invoices
-            ResultSet items = invoiceDAO.getAllItems();
+            ResultSet items = invoiceDAO.getAllItems(false);
             HashMap<String, JSONArray> itemsMap = new HashMap<>();
             while (items.next()) {
                 String id = items.getString("order_id");

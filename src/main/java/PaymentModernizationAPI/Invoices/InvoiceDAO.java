@@ -27,8 +27,17 @@ public class InvoiceDAO {
         return DAOManager.getStatement().executeQuery(invoicesQuery);
     }
 
-    ResultSet getAllItems() throws SQLException {
-        DAOManager.reset();
+    /**
+     * Returns all the invoice items in the database
+     *
+     * @param reset Whether to reset the connection or not
+     * @return All the invoice items in the database
+     * @throws SQLException Error while getting invoice items
+     */
+    ResultSet getAllItems(boolean reset) throws SQLException {
+        if(reset){
+            DAOManager.reset();
+        }
         String itemsQuery = String.format("SELECT * FROM invoice_items;");
         return DAOManager.getStatement().executeQuery(itemsQuery);
     }
