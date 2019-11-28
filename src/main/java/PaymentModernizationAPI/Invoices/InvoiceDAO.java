@@ -3,6 +3,7 @@ package PaymentModernizationAPI.Invoices;
 import PaymentModernizationAPI.DataAccess.DAOManager;
 import org.springframework.stereotype.Repository;
 
+import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -12,6 +13,25 @@ import java.text.SimpleDateFormat;
  */
 @Repository
 public class InvoiceDAO {
+
+    /**
+     * Returns all the invoices associated with a user
+     *
+     * @param authorization User's auth token
+     * @return Invoices associated with a user
+     * @throws SQLException Error while retrieving invoices
+     */
+    ResultSet getInvoices(String authorization) throws SQLException {
+        DAOManager.reset();
+        String invoicesQuery = String.format("CALL get_invoices('%s');", authorization);
+        return DAOManager.getStatement().executeQuery(invoicesQuery);
+    }
+
+    ResultSet getAllItems() throws SQLException {
+        DAOManager.reset();
+        String itemsQuery = String.format("SELECT * FROM invoice_items;");
+        return DAOManager.getStatement().executeQuery(itemsQuery);
+    }
 
     /**
      * Returns the IDs of all invoices related to a certain user
@@ -102,13 +122,14 @@ public class InvoiceDAO {
 
     /**
      * Change status of an invoice
+     *
      * @param authorization User's auth token
-     * @param invoiceId Invoice ID
-     * @param status New status
+     * @param invoiceId     Invoice ID
+     * @param status        New status
      * @return Number of rows affected
      * @throws SQLException Error while changing status
      */
-    int changeStatus(String authorization, String invoiceId, String status) throws SQLException{
+    int changeStatus(String authorization, String invoiceId, String status) throws SQLException {
         DAOManager.reset();
         String changeStatusQuery = String.format("CALL update_status('%s', '%s', '%s');",
                 authorization, invoiceId, status);

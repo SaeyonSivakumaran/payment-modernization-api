@@ -5,9 +5,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Service for invoices
@@ -25,29 +27,47 @@ public class InvoiceService {
     }
 
     /**
-     * Returns information about all invoices related to a user
+     * Returns all the invoices associated with a user
      *
-     * @param authorization Authorization token of a user
-     * @return JSON information about all invoices related to a user
+     * @param authorization User's auth token
+     * @return Invoices associated with a user
      */
-    String invoices(String authorization) {
+    String getInvoices(String authorization) {
         // Create the JSON to be returned
         JSONObject invoicesJSON = new JSONObject();
         invoicesJSON.put("invoices", JSONObject.NULL);
         // Try to get the invoices for the user
         try {
-            JSONArray invoices = new JSONArray();
-            // Getting the IDs of all invoices related to this user
-            ResultSet invoiceIdResultSet = invoiceDAO.getInvoiceIDs(authorization);
-            ArrayList<String> invoiceIds = new ArrayList<>();
-            while (invoiceIdResultSet.next()) {
-                invoiceIds.add(invoiceIdResultSet.getString("id"));
+            ResultSet invoices = invoiceDAO.getInvoices(authorization);
+            JSONArray invoicesArray = retrieveInvoiceInfo(invoices);
+            invoices.close();
+            // Adding items to the invoices
+            ResultSet items = invoiceDAO.getAllItems();
+            HashMap<String, JSONArray> itemsMap = new HashMap<>();
+            while (items.next()) {
+                String id = items.getString("order_id");
+                if (itemsMap.containsKey(id)) {
+                    JSONObject tempItem = new JSONObject();
+                    tempItem.put("description", items.getString("description"));
+                    tempItem.put("quantity", items.getString("quantity"));
+                    tempItem.put("price", items.getString("price"));
+                    itemsMap.get(id).put(tempItem);
+                } else {
+                    JSONArray tempItems = new JSONArray();
+                    JSONObject tempItem = new JSONObject();
+                    tempItem.put("description", items.getString("description"));
+                    tempItem.put("quantity", items.getString("quantity"));
+                    tempItem.put("price", items.getString("price"));
+                    tempItems.put(tempItem);
+                    itemsMap.put(id, tempItems);
+                }
             }
-            // Adding each invoice to the JSON
-            for (String id : invoiceIds) {
-                invoices.put(getInvoice(authorization, id));
+            for(int i = 0; i < invoicesArray.length(); i++){
+                JSONObject invoice = invoicesArray.getJSONObject(i);
+                String invoiceId = invoice.getString("invoiceId");
+                invoice.put("items", itemsMap.get(invoiceId));
             }
-            invoicesJSON.put("invoices", invoices);
+            invoicesJSON.put("invoices", invoicesArray);
         } catch (Exception e) {
             invoicesJSON.put("invoices", JSONObject.NULL);
         }
@@ -108,22 +128,23 @@ public class InvoiceService {
 
     /**
      * Change the status of an invoice
+     *
      * @param authorization User's auth token
-     * @param invoiceId Invoice ID
-     * @param status New status
+     * @param invoiceId     Invoice ID
+     * @param status        New status
      * @return Whether the status update was successful or not
      */
     String changeStatus(String authorization, String invoiceId, String status) {
         JSONObject changedJSON = new JSONObject();
         changedJSON.put("isValid", false);
         // Checking if the status is valid
-        if(EnumUtils.isValidEnum(Invoice.InvoiceStatus.class, status)){
+        if (EnumUtils.isValidEnum(Invoice.InvoiceStatus.class, status)) {
             // Changing the status
-            try{
-                if(invoiceDAO.changeStatus(authorization, invoiceId, status) > 0){
+            try {
+                if (invoiceDAO.changeStatus(authorization, invoiceId, status) > 0) {
                     changedJSON.put("isValid", true);
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 changedJSON.put("isValid", false);
             }
         }
@@ -203,6 +224,36 @@ public class InvoiceService {
         ResultSet typeInfo = invoiceDAO.userType(authorization);
         typeInfo.next();
         return typeInfo.getString("user_type");
+    }
+
+    /**
+     * Returns information about all invoices related to a user
+     *
+     * @param authorization Authorization token of a user
+     * @return JSON information about all invoices related to a user
+     */
+    String invoices(String authorization) {
+        // Create the JSON to be returned
+        JSONObject invoicesJSON = new JSONObject();
+        invoicesJSON.put("invoices", JSONObject.NULL);
+        // Try to get the invoices for the user
+        try {
+            JSONArray invoices = new JSONArray();
+            // Getting the IDs of all invoices related to this user
+            ResultSet invoiceIdResultSet = invoiceDAO.getInvoiceIDs(authorization);
+            ArrayList<String> invoiceIds = new ArrayList<>();
+            while (invoiceIdResultSet.next()) {
+                invoiceIds.add(invoiceIdResultSet.getString("id"));
+            }
+            // Adding each invoice to the JSON
+            for (String id : invoiceIds) {
+                invoices.put(getInvoice(authorization, id));
+            }
+            invoicesJSON.put("invoices", invoices);
+        } catch (Exception e) {
+            invoicesJSON.put("invoices", JSONObject.NULL);
+        }
+        return invoicesJSON.toString();
     }
 
 }

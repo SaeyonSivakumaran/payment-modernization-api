@@ -34,7 +34,7 @@ public class InvoiceController {
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String invoices(@RequestHeader(value = "Authorization") String authorization) {
-        return invoiceService.invoices(authorization);
+        return invoiceService.getInvoices(authorization);
     }
 
     /**
