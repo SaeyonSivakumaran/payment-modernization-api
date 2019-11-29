@@ -40,7 +40,6 @@ public class InvoiceService {
         try {
             ResultSet invoices = invoiceDAO.getInvoices(authorization);
             JSONArray invoicesArray = retrieveInvoiceInfo(invoices);
-            invoices.close();
             // Adding items to the invoices
             ResultSet items = invoiceDAO.getAllItems(false);
             HashMap<String, JSONArray> itemsMap = new HashMap<>();
@@ -192,6 +191,7 @@ public class InvoiceService {
             tempInvoiceJSON.put("status", invoices.getString("status"));
             invoicesJSON.put(tempInvoiceJSON);
         }
+        invoices.close();
         return invoicesJSON;
     }
 
