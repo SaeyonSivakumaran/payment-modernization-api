@@ -62,15 +62,16 @@ public class InvoiceService {
                     itemsMap.put(id, tempItems);
                 }
             }
+            items.close();
             for(int i = 0; i < invoicesArray.length(); i++){
                 JSONObject invoice = invoicesArray.getJSONObject(i);
                 String invoiceId = invoice.getString("invoiceId");
                 invoice.put("items", itemsMap.get(invoiceId));
             }
             invoicesJSON.put("invoices", invoicesArray);
-            System.out.println(String.format("%s: /invoices. ", authorization));
+            System.out.println(String.format("%s: /invoices. %s ", authorization, invoicesJSON.toString()));
         } catch (Exception e) {
-            System.out.println(String.format("%s: /invoices. ", authorization, e.getMessage()));
+            System.out.println(String.format("%s: /invoices. %s", authorization, e.getMessage()));
             invoicesJSON.put("invoices", JSONObject.NULL);
         }
         return invoicesJSON.toString();
