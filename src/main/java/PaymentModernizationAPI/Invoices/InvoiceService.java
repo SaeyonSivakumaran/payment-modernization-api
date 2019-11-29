@@ -71,7 +71,7 @@ public class InvoiceService {
             invoicesJSON.put("invoices", invoicesArray);
             System.out.println(String.format("%s: /invoices. %s ", authorization, invoicesJSON.toString()));
         } catch (Exception e) {
-            System.out.println(String.format("%s: /invoices. %s", authorization, e.getMessage()));
+            System.out.println(String.format("%s: /invoices. Error: %s", authorization, e.getMessage()));
             invoicesJSON.put("invoices", JSONObject.NULL);
         }
         return invoicesJSON.toString();
