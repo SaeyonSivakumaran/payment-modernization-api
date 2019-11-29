@@ -15,6 +15,15 @@ public class DAOManager {
     private static Statement statement;
 
     /**
+     * Returns connection to database
+     *
+     * @return Connection to database
+     */
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    /**
      * Returns statement for database connection
      *
      * @return Statement for database connection

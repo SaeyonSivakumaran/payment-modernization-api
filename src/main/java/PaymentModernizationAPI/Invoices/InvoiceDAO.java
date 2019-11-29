@@ -3,8 +3,9 @@ package PaymentModernizationAPI.Invoices;
 import PaymentModernizationAPI.DataAccess.DAOManager;
 import org.springframework.stereotype.Repository;
 
-import javax.xml.transform.Result;
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
@@ -23,8 +24,10 @@ public class InvoiceDAO {
      */
     ResultSet getInvoices(String authorization) throws SQLException {
         DAOManager.reset();
-        String invoicesQuery = String.format("CALL get_invoices('%s');", authorization);
-        return DAOManager.getStatement().executeQuery(invoicesQuery);
+        CallableStatement cs = DAOManager.getConnection().prepareCall("{call get_invoices(?)}");
+        cs.setString("auth_token", authorization);
+        cs.execute();
+        return cs.getResultSet();
     }
 
     /**
