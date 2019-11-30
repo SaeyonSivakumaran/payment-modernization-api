@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -14,7 +15,7 @@ public class DAOManager {
     // Connection variables
     private static Connection connection;
     private static Statement statement;
-    private static Date lastUsedTime;
+    private static ArrayList<Connection> connections = new ArrayList<>();
 
 
     /**
@@ -22,8 +23,11 @@ public class DAOManager {
      *
      * @return Connection to database
      */
-    public static Connection getConnection() {
-        return connection;
+    public static Connection getConnection() throws SQLException{
+        String password = "a7feaaba";
+        String connectionURL = "jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_b8a1f59b8d70fd1";
+        String username = "b9657ba5187062";
+        return DriverManager.getConnection(connectionURL, username, password);
     }
 
     /**
@@ -31,8 +35,10 @@ public class DAOManager {
      *
      * @return Statement for database connection
      */
-    public static Statement getStatement() {
-        return statement;
+    public static Statement getStatement() throws SQLException{
+        Connection newConnection = getConnection();
+        connections.add(newConnection);
+        return newConnection.createStatement();
     }
 
     /**
@@ -62,21 +68,15 @@ public class DAOManager {
      * @throws SQLException Error while resetting the connection and statement
      */
     public static void reset() throws SQLException {
-        if(lastUsedTime == null){
-            close();
-            resetConnection();
-            resetStatement();
-            lastUsedTime = new Date();
-        } else {
-            Date currentTime = new Date();
-            long timeDifference = currentTime.getTime() - lastUsedTime.getTime();
-            if(timeDifference > 10000){
-                close();
-                resetConnection();
-                resetStatement();
-                lastUsedTime = new Date();
+        for(Connection conn : connections){
+            if(conn.isValid(0)){
+                conn.close();
+                connections.remove(conn);
             }
         }
+        //close();
+        //resetConnection();
+        //resetStatement();
         System.out.println("Connection reset");
     }
 
