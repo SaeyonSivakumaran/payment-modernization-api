@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -69,18 +68,15 @@ public class DAOManager {
      * @throws SQLException Error while resetting the connection and statement
      */
     public static void reset() throws SQLException {
+        System.out.println(String.format("Connection reset - Current connections: %s", connections.size()));
         Iterator<Connection> iter = connections.iterator();
         while (iter.hasNext()) {
             Connection conn = iter.next();
-            if(conn.isValid(0)){
+            if(!conn.isClosed()){
                 conn.close();
                 iter.remove();
             }
         }
-        //close();
-        //resetConnection();
-        //resetStatement();
-        System.out.println(String.format("Connection reset - Current connections: %s", connections.size()));
     }
 
     /**
