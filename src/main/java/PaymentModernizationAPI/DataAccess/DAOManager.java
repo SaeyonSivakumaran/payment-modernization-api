@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * DAO for connecting to database
@@ -13,7 +14,8 @@ public class DAOManager {
     // Connection variables
     private static Connection connection;
     private static Statement statement;
-
+    private static ArrayList<Connection> connections = new ArrayList<>();
+    private static ArrayList<Statement> statements = new ArrayList<>();
 
     /**
      * Returns connection to database
@@ -21,7 +23,16 @@ public class DAOManager {
      * @return Connection to database
      */
     public static Connection getConnection() throws SQLException{
-        return connection;
+        if(connections.size() >= 3){
+            return connections.get(0);
+        } else {
+            String password = "a7feaaba";
+            String connectionURL = "jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_b8a1f59b8d70fd1";
+            String username = "b9657ba5187062";
+            Connection conn = DriverManager.getConnection(connectionURL, username, password);
+            connections.add(conn);
+            return conn;
+        }
     }
 
     /**
@@ -30,7 +41,13 @@ public class DAOManager {
      * @return Statement for database connection
      */
     public static Statement getStatement() throws SQLException{
-        return statement;
+        if(connections.size() >= 3){
+            return statements.get(0);
+        } else {
+            Statement tempStatement = getConnection().createStatement();
+            statements.add(tempStatement);
+            return tempStatement;
+        }
     }
 
     /**
@@ -60,18 +77,14 @@ public class DAOManager {
      * @throws SQLException Error while resetting the connection and statement
      */
     public static void reset() throws SQLException {
-        if(connection == null){
-            resetConnection();
-            resetStatement();
-            System.out.println("Connection reset");
-        } else {
-            if(!connection.isValid(0)){
-                close();
-                resetConnection();
-                resetStatement();
-                System.out.println("Connection reset");
-            }
+        if(connections.size() > 3){
+            connections.get(0).close();
+            connections.remove(0);
         }
+        /*close();
+        resetConnection();
+        resetStatement();*/
+        System.out.println("Connection reset");
     }
 
     /**
