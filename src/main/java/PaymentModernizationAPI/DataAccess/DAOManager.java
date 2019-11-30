@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 /**
  * DAO for connecting to database
@@ -13,6 +14,8 @@ public class DAOManager {
     // Connection variables
     private static Connection connection;
     private static Statement statement;
+    private static Date lastUsedTime;
+
 
     /**
      * Returns connection to database
@@ -59,9 +62,21 @@ public class DAOManager {
      * @throws SQLException Error while resetting the connection and statement
      */
     public static void reset() throws SQLException {
-        close();
-        resetConnection();
-        resetStatement();
+        if(lastUsedTime == null){
+            close();
+            resetConnection();
+            resetStatement();
+            lastUsedTime = new Date();
+        } else {
+            Date currentTime = new Date();
+            long timeDifference = currentTime.getTime() - lastUsedTime.getTime();
+            if(timeDifference > 10000){
+                close();
+                resetConnection();
+                resetStatement();
+                lastUsedTime = new Date();
+            }
+        }
         System.out.println("Connection reset");
     }
 

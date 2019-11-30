@@ -22,7 +22,7 @@ public class InvoiceDAO {
      * @throws SQLException Error while retrieving invoices
      */
     ResultSet getInvoices(String authorization) throws SQLException {
-        //DAOManager.reset();
+        DAOManager.reset();
         CallableStatement cs = DAOManager.getConnection().prepareCall("{call get_invoices(?)}");
         cs.setString("auth_token", authorization);
         cs.execute();
