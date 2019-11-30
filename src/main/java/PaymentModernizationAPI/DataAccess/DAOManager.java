@@ -23,16 +23,12 @@ public class DAOManager {
      * @return Connection to database
      */
     public static Connection getConnection() throws SQLException{
-        if(connections.size() >= 3){
-            return connections.get(0);
-        } else {
-            String password = "a7feaaba";
-            String connectionURL = "jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_b8a1f59b8d70fd1";
-            String username = "b9657ba5187062";
-            Connection conn = DriverManager.getConnection(connectionURL, username, password);
-            connections.add(conn);
-            return conn;
-        }
+        String password = "a7feaaba";
+        String connectionURL = "jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_b8a1f59b8d70fd1";
+        String username = "b9657ba5187062";
+        Connection conn = DriverManager.getConnection(connectionURL, username, password);
+        connections.add(conn);
+        return conn;
     }
 
     /**
@@ -41,13 +37,9 @@ public class DAOManager {
      * @return Statement for database connection
      */
     public static Statement getStatement() throws SQLException{
-        if(connections.size() >= 3){
-            return statements.get(0);
-        } else {
-            Statement tempStatement = getConnection().createStatement();
-            statements.add(tempStatement);
-            return tempStatement;
-        }
+        Statement tempStatement = getConnection().createStatement();
+        statements.add(tempStatement);
+        return tempStatement;
     }
 
     /**
