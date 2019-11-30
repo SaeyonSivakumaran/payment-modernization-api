@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * DAO for connecting to database
@@ -15,7 +13,6 @@ public class DAOManager {
     // Connection variables
     private static Connection connection;
     private static Statement statement;
-    private static ArrayList<Connection> connections = new ArrayList<>();
 
 
     /**
@@ -24,10 +21,7 @@ public class DAOManager {
      * @return Connection to database
      */
     public static Connection getConnection() throws SQLException{
-        String password = "a7feaaba";
-        String connectionURL = "jdbc:mysql://us-cdbr-iron-east-05.cleardb.net:3306/heroku_b8a1f59b8d70fd1";
-        String username = "b9657ba5187062";
-        return DriverManager.getConnection(connectionURL, username, password);
+        return connection;
     }
 
     /**
@@ -36,9 +30,7 @@ public class DAOManager {
      * @return Statement for database connection
      */
     public static Statement getStatement() throws SQLException{
-        Connection newConnection = getConnection();
-        connections.add(newConnection);
-        return newConnection.createStatement();
+        return statement;
     }
 
     /**
@@ -68,14 +60,11 @@ public class DAOManager {
      * @throws SQLException Error while resetting the connection and statement
      */
     public static void reset() throws SQLException {
-        System.out.println(String.format("Connection reset - Current connections: %s", connections.size()));
-        Iterator<Connection> iter = connections.iterator();
-        while (iter.hasNext()) {
-            Connection conn = iter.next();
-            if(!conn.isClosed()){
-                conn.close();
-                iter.remove();
-            }
+        if(connection == null || !connection.isValid(0)){
+            close();
+            resetConnection();
+            resetStatement();
+            System.out.println("Connection reset");
         }
     }
 
