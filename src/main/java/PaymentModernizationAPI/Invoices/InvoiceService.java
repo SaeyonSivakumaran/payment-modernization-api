@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,10 +60,14 @@ public class InvoiceService {
                     itemsMap.put(id, tempItems);
                 }
             }
-            for(int i = 0; i < invoicesArray.length(); i++){
+            for (int i = 0; i < invoicesArray.length(); i++) {
                 JSONObject invoice = invoicesArray.getJSONObject(i);
                 String invoiceId = invoice.getString("invoiceId");
-                invoice.put("items", itemsMap.get(invoiceId));
+                if (itemsMap.containsKey(invoiceId)) {
+                    invoice.put("items", itemsMap.get(invoiceId));
+                } else {
+                    invoice.put("items", new JSONArray());
+                }
             }
             invoicesJSON.put("invoices", invoicesArray);
             items.close();
