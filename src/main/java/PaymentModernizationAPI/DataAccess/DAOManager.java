@@ -60,11 +60,17 @@ public class DAOManager {
      * @throws SQLException Error while resetting the connection and statement
      */
     public static void reset() throws SQLException {
-        if(connection == null || !connection.isValid(0)){
-            close();
+        if(connection == null){
             resetConnection();
             resetStatement();
             System.out.println("Connection reset");
+        } else {
+            if(!connection.isValid(0)){
+                close();
+                resetConnection();
+                resetStatement();
+                System.out.println("Connection reset");
+            }
         }
     }
 
