@@ -5,8 +5,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -39,6 +41,11 @@ public class InvoiceService {
         try {
             ResultSet invoices = invoiceDAO.getInvoices(authorization);
             JSONArray invoicesArray = retrieveInvoiceInfo(invoices);
+            // Closing invoices ResultSet
+            Statement invoiceStatement = invoices.getStatement();
+            Connection invoiceConnection = invoiceStatement.getConnection();
+            invoiceStatement.close();
+            invoiceConnection.close();
             // Adding items to the invoices
             ResultSet items = invoiceDAO.getAllItems(false);
             HashMap<String, JSONArray> itemsMap = new HashMap<>();
@@ -60,6 +67,11 @@ public class InvoiceService {
                     itemsMap.put(id, tempItems);
                 }
             }
+            // Closing items ResultSet
+            Statement itemsStatement = items.getStatement();
+            Connection itemsConnection = itemsStatement.getConnection();
+            itemsStatement.close();
+            itemsConnection.close();
             for (int i = 0; i < invoicesArray.length(); i++) {
                 JSONObject invoice = invoicesArray.getJSONObject(i);
                 String invoiceId = invoice.getString("invoiceId");
@@ -70,7 +82,6 @@ public class InvoiceService {
                 }
             }
             invoicesJSON.put("invoices", invoicesArray);
-            items.close();
             System.out.println(String.format("%s: /invoices. %s ", authorization, invoicesJSON.toString()));
         } catch (Exception e) {
             System.out.println(String.format("%s: /invoices. Error: %s", authorization, e.getMessage()));
@@ -194,7 +205,6 @@ public class InvoiceService {
             tempInvoiceJSON.put("status", invoices.getString("status"));
             invoicesJSON.put(tempInvoiceJSON);
         }
-        invoices.close();
         return invoicesJSON;
     }
 

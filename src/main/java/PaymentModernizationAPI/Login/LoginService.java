@@ -4,7 +4,9 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  * Service for login functionality
@@ -50,6 +52,11 @@ public class LoginService {
             loginJSON.put("region", userAuthInfo.getString("region"));
             loginJSON.put("country", userAuthInfo.getString("country"));
             loginJSON.put("postalCode", userAuthInfo.getString("postal_code"));
+            // Closing userAuthInfo ResultSet
+            Statement authInfoStatement = userAuthInfo.getStatement();
+            Connection authInfoConnection = authInfoStatement.getConnection();
+            authInfoStatement.close();
+            authInfoConnection.close();
         } catch (Exception e) {
             loginJSON.put("isValid", false);
         }
