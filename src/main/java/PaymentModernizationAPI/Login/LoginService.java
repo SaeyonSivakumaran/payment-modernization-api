@@ -52,7 +52,7 @@ public class LoginService {
             loginJSON.put("region", userAuthInfo.getString("region"));
             loginJSON.put("country", userAuthInfo.getString("country"));
             loginJSON.put("postalCode", userAuthInfo.getString("postal_code"));
-            // Closing userAuthInfo ResultSet
+            // Closing userAuthInfo connection
             Statement authInfoStatement = userAuthInfo.getStatement();
             Connection authInfoConnection = authInfoStatement.getConnection();
             authInfoStatement.close();

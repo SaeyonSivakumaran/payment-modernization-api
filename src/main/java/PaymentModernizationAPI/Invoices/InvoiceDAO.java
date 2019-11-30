@@ -32,42 +32,13 @@ public class InvoiceDAO {
     /**
      * Returns all the invoice items in the database
      *
-     * @param reset Whether to reset the connection or not
      * @return All the invoice items in the database
      * @throws SQLException Error while getting invoice items
      */
-    ResultSet getAllItems(boolean reset) throws SQLException {
-        if(reset){
-            DAOManager.reset();
-        }
-        String itemsQuery = String.format("SELECT * FROM invoice_items;");
+    ResultSet getAllItems() throws SQLException {
+        DAOManager.reset();
+        String itemsQuery = "SELECT * FROM invoice_items;";
         return DAOManager.getStatement().executeQuery(itemsQuery);
-    }
-
-    /**
-     * Returns the IDs of all invoices related to a certain user
-     *
-     * @param authorization User's auth token
-     * @return IDs of all invoices related to the user
-     * @throws SQLException Error while retrieving invoice IDs
-     */
-    ResultSet getInvoiceIDs(String authorization) throws SQLException {
-        DAOManager.reset();
-        String idQuery = String.format("CALL get_invoice_ids('%s');", authorization);
-        return DAOManager.getStatement().executeQuery(idQuery);
-    }
-
-    /**
-     * Returns type of a user from the database
-     *
-     * @param authorization User's auth token
-     * @return User's type
-     * @throws SQLException Error while retrieving user's type
-     */
-    ResultSet userType(String authorization) throws SQLException {
-        DAOManager.reset();
-        String typeQuery = String.format("SELECT user_type FROM users WHERE auth_token='%s'", authorization);
-        return DAOManager.getStatement().executeQuery(typeQuery);
     }
 
     /**

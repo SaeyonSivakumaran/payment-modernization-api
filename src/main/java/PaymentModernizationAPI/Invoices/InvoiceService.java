@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -41,13 +40,13 @@ public class InvoiceService {
         try {
             ResultSet invoices = invoiceDAO.getInvoices(authorization);
             JSONArray invoicesArray = retrieveInvoiceInfo(invoices);
-            // Closing invoices ResultSet
-            Statement invoiceStatement = invoices.getStatement();
-            Connection invoiceConnection = invoiceStatement.getConnection();
-            invoiceStatement.close();
-            invoiceConnection.close();
+            // Closing invoices connection
+            Statement invoicesStatement = invoices.getStatement();
+            Connection invoicesConnection = invoicesStatement.getConnection();
+            invoicesStatement.close();
+            invoicesConnection.close();
             // Adding items to the invoices
-            ResultSet items = invoiceDAO.getAllItems(false);
+            ResultSet items = invoiceDAO.getAllItems();
             HashMap<String, JSONArray> itemsMap = new HashMap<>();
             while (items.next()) {
                 String id = items.getString("order_id");
@@ -67,7 +66,7 @@ public class InvoiceService {
                     itemsMap.put(id, tempItems);
                 }
             }
-            // Closing items ResultSet
+            // Closing items connection
             Statement itemsStatement = items.getStatement();
             Connection itemsConnection = itemsStatement.getConnection();
             itemsStatement.close();
@@ -108,6 +107,11 @@ public class InvoiceService {
             JSONArray invoicesJSON = retrieveInvoiceInfo(invoice);
             JSONObject invoiceJSON = invoicesJSON.getJSONObject(0);
             invoiceJSON.put("items", getInvoiceItems(authorization, invoiceId));
+            // Closing invoice connection
+            Statement invoiceStatement = invoice.getStatement();
+            Connection invoiceConnection = invoiceStatement.getConnection();
+            invoiceStatement.close();
+            invoiceConnection.close();
             return invoiceJSON;
         } catch (Exception e) {
             return new JSONObject().put("invoice", JSONObject.NULL);
@@ -137,6 +141,11 @@ public class InvoiceService {
                     break;
                 }
             }
+            // Closing invoice id connection
+            Statement invoiceIdStatement = invoiceIdResultSet.getStatement();
+            Connection invoiceIdConnection = invoiceIdStatement.getConnection();
+            invoiceIdStatement.close();
+            invoiceIdConnection.close();
         } catch (Exception e) {
             creationJSON.put("isValid", false);
         }
@@ -227,50 +236,12 @@ public class InvoiceService {
             tempItem.put("price", invoiceItems.getString("price"));
             items.put(tempItem);
         }
+        // Closing invoice items connection
+        Statement invoiceItemsStatement = invoiceItems.getStatement();
+        Connection invoiceItemsConnection = invoiceItemsStatement.getConnection();
+        invoiceItemsStatement.close();
+        invoiceItemsConnection.close();
         return items;
-    }
-
-    /**
-     * Get the user's type from the database
-     *
-     * @param authorization User's auth token
-     * @return User's type
-     * @throws SQLException Error while retrieving user type
-     */
-    private String getUserType(String authorization) throws SQLException {
-        ResultSet typeInfo = invoiceDAO.userType(authorization);
-        typeInfo.next();
-        return typeInfo.getString("user_type");
-    }
-
-    /**
-     * Returns information about all invoices related to a user
-     *
-     * @param authorization Authorization token of a user
-     * @return JSON information about all invoices related to a user
-     */
-    String invoices(String authorization) {
-        // Create the JSON to be returned
-        JSONObject invoicesJSON = new JSONObject();
-        invoicesJSON.put("invoices", JSONObject.NULL);
-        // Try to get the invoices for the user
-        try {
-            JSONArray invoices = new JSONArray();
-            // Getting the IDs of all invoices related to this user
-            ResultSet invoiceIdResultSet = invoiceDAO.getInvoiceIDs(authorization);
-            ArrayList<String> invoiceIds = new ArrayList<>();
-            while (invoiceIdResultSet.next()) {
-                invoiceIds.add(invoiceIdResultSet.getString("id"));
-            }
-            // Adding each invoice to the JSON
-            for (String id : invoiceIds) {
-                invoices.put(getInvoice(authorization, id));
-            }
-            invoicesJSON.put("invoices", invoices);
-        } catch (Exception e) {
-            invoicesJSON.put("invoices", JSONObject.NULL);
-        }
-        return invoicesJSON.toString();
     }
 
 }
