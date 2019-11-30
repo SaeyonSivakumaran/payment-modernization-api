@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * DAO for connecting to database
@@ -68,16 +69,18 @@ public class DAOManager {
      * @throws SQLException Error while resetting the connection and statement
      */
     public static void reset() throws SQLException {
-        for(Connection conn : connections){
+        Iterator<Connection> iter = connections.iterator();
+        while (iter.hasNext()) {
+            Connection conn = iter.next();
             if(conn.isValid(0)){
                 conn.close();
-                connections.remove(conn);
+                iter.remove();
             }
         }
         //close();
         //resetConnection();
         //resetStatement();
-        System.out.println("Connection reset");
+        System.out.println(String.format("Connection reset - Current connections: %s", connections.size()));
     }
 
     /**
