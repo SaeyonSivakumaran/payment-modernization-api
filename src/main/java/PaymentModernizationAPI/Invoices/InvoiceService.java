@@ -112,8 +112,11 @@ public class InvoiceService {
             Connection invoiceConnection = invoiceStatement.getConnection();
             invoiceStatement.close();
             invoiceConnection.close();
+            System.out.println(String.format("%s: /invoices/%s. %s ", authorization, invoiceId, invoiceJSON.toString()));
             return invoiceJSON;
         } catch (Exception e) {
+            System.out.println(String.format("%s: /invoices/%s. Error: %s", authorization, invoiceId, e.getMessage()));
+            e.printStackTrace();
             return new JSONObject().put("invoice", JSONObject.NULL);
         }
     }
