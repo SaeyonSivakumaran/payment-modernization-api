@@ -197,7 +197,21 @@ public class InvoiceService {
             tempInvoiceJSON.put("invoiceId", invoices.getString("id"));
             // Adding other user's information
             tempInvoiceJSON.put("supplier", invoices.getString("supplier_name"));
+            JSONArray supplierArray = new JSONArray();
+            supplierArray.put(invoices.getString("supplier_street_address"));
+            supplierArray.put(invoices.getString("supplier_city"));
+            supplierArray.put(invoices.getString("supplier_region"));
+            supplierArray.put(invoices.getString("supplier_country"));
+            supplierArray.put(invoices.getString("supplier_postal_code"));
+            tempInvoiceJSON.put("supplierAddress", supplierArray);
             tempInvoiceJSON.put("business", invoices.getString("business_name"));
+            JSONArray businessArray = new JSONArray();
+            businessArray.put(invoices.getString("business_street_address"));
+            businessArray.put(invoices.getString("business_city"));
+            businessArray.put(invoices.getString("business_region"));
+            businessArray.put(invoices.getString("business_country"));
+            businessArray.put(invoices.getString("business_postal_code"));
+            tempInvoiceJSON.put("businessAddress", businessArray);
             // Adding the dates if they exist
             if (invoices.getString("invoice_date") != null) {
                 tempInvoiceJSON.put("invoiceDate", invoices.getString("invoice_date"));
