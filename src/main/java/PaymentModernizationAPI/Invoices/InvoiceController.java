@@ -97,4 +97,19 @@ public class InvoiceController {
         return invoiceService.changeStatus(authorization, invoiceId, statusMap.get("newStatus").get(0));
     }
 
+    /**
+     * Update driver of an existing invoice
+     *
+     * @param authorization User's auth token
+     * @param driverMap     Driver information
+     * @param invoiceId     Invoice ID
+     * @return Whether driver change was successful or not
+     */
+    @RequestMapping(value = "/update-driver/{invoiceId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String changeDriver(@RequestHeader(value = "Authorization") String authorization,
+                               @RequestBody MultiValueMap<String, String> driverMap,
+                               @PathVariable(value = "invoiceId") String invoiceId) {
+        return invoiceService.changeDriver(authorization, invoiceId, driverMap.get("newDriver").get(0));
+    }
+
 }

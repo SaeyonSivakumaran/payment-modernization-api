@@ -181,6 +181,28 @@ public class InvoiceService {
     }
 
     /**
+     * Change the driver of an invoice
+     *
+     * @param authorization User's auth token
+     * @param invoiceId     Invoice ID
+     * @param driver        New driver
+     * @return Whether the driver update was successful or not
+     */
+    String changeDriver(String authorization, String invoiceId, String driver) {
+        JSONObject changedJSON = new JSONObject();
+        changedJSON.put("isValid", false);
+        // Changing the status
+        try {
+            if (invoiceDAO.changeDriver(authorization, invoiceId, driver) > 0) {
+                changedJSON.put("isValid", true);
+            }
+        } catch (Exception e) {
+            changedJSON.put("isValid", false);
+        }
+        return changedJSON.toString();
+    }
+
+    /**
      * Return all invoice information from the given ResultSet as a JSONArray
      *
      * @param invoices ResultSet containing invoices

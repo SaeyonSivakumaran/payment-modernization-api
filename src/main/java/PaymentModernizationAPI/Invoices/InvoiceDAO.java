@@ -118,4 +118,20 @@ public class InvoiceDAO {
         return DAOManager.getStatement().executeUpdate(changeStatusQuery);
     }
 
+    /**
+     * Change driver of an invoice
+     *
+     * @param authorization User's auth token
+     * @param invoiceId     Invoice ID
+     * @param driver        New driver
+     * @return Number of rows affected
+     * @throws SQLException Error while changing driver
+     */
+    int changeDriver(String authorization, String invoiceId, String driver) throws SQLException {
+        DAOManager.reset();
+        String changeStatusQuery = String.format("CALL update_driver('%s', '%s', '%s');",
+                authorization, invoiceId, driver);
+        return DAOManager.getStatement().executeUpdate(changeStatusQuery);
+    }
+
 }
