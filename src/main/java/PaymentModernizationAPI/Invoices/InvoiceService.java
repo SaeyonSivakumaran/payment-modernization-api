@@ -200,21 +200,21 @@ public class InvoiceService {
             tempInvoiceJSON.put("invoiceId", invoices.getString("id"));
             // Adding other user's information
             tempInvoiceJSON.put("supplier", invoices.getString("supplier_name"));
-            JSONArray supplierArray = new JSONArray();
-            supplierArray.put(invoices.getString("supplier_street_address"));
-            supplierArray.put(invoices.getString("supplier_city"));
-            supplierArray.put(invoices.getString("supplier_region"));
-            supplierArray.put(invoices.getString("supplier_country"));
-            supplierArray.put(invoices.getString("supplier_postal_code"));
-            tempInvoiceJSON.put("supplierAddress", supplierArray);
+            JSONObject supplierAddress = new JSONObject();
+            supplierAddress.put("streetAddress", invoices.getString("supplier_street_address"));
+            supplierAddress.put("city", invoices.getString("supplier_city"));
+            supplierAddress.put("region", invoices.getString("supplier_region"));
+            supplierAddress.put("country", invoices.getString("supplier_country"));
+            supplierAddress.put("postalCode", invoices.getString("supplier_postal_code"));
+            tempInvoiceJSON.put("supplierAddress", supplierAddress);
             tempInvoiceJSON.put("business", invoices.getString("business_name"));
-            JSONArray businessArray = new JSONArray();
-            businessArray.put(invoices.getString("business_street_address"));
-            businessArray.put(invoices.getString("business_city"));
-            businessArray.put(invoices.getString("business_region"));
-            businessArray.put(invoices.getString("business_country"));
-            businessArray.put(invoices.getString("business_postal_code"));
-            tempInvoiceJSON.put("businessAddress", businessArray);
+            JSONObject businessAddress = new JSONObject();
+            businessAddress.put("streetAddress", invoices.getString("business_street_address"));
+            businessAddress.put("city", invoices.getString("business_city"));
+            businessAddress.put("region", invoices.getString("business_region"));
+            businessAddress.put("country", invoices.getString("business_country"));
+            businessAddress.put("postalCode", invoices.getString("business_postal_code"));
+            tempInvoiceJSON.put("businessAddress", businessAddress);
             // Adding the dates if they exist
             if (invoices.getString("invoice_date") != null) {
                 tempInvoiceJSON.put("invoiceDate", invoices.getString("invoice_date"));
