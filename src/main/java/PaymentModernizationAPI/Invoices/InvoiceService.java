@@ -237,6 +237,7 @@ public class InvoiceService {
             businessAddress.put("country", invoices.getString("business_country"));
             businessAddress.put("postalCode", invoices.getString("business_postal_code"));
             tempInvoiceJSON.put("businessAddress", businessAddress);
+            tempInvoiceJSON.put("driver", invoices.getString("driver"));
             // Adding the dates if they exist
             if (invoices.getString("invoice_date") != null) {
                 tempInvoiceJSON.put("invoiceDate", invoices.getString("invoice_date"));
