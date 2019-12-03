@@ -3,9 +3,7 @@ package PaymentModernizationAPI.Invoices;
 import PaymentModernizationAPI.DataAccess.DAOManager;
 import org.springframework.stereotype.Repository;
 
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 
 /**
@@ -99,7 +97,13 @@ public class InvoiceDAO {
         String addItemQuery = String.format("CALL insert_invoice_items('%s', '%s', '%s', '%s');",
                 item.getInvoiceId(), item.getDescription(), String.valueOf(item.getQuantity()),
                 String.valueOf(item.getPrice()));
-        return DAOManager.getStatement().executeUpdate(addItemQuery);
+        Statement statement = DAOManager.getStatement();
+        int rows = statement.executeUpdate(addItemQuery);
+        // Closing the connection
+        Connection connection = statement.getConnection();
+        statement.close();
+        connection.close();
+        return rows;
     }
 
     /**
@@ -115,7 +119,57 @@ public class InvoiceDAO {
         DAOManager.reset();
         String changeStatusQuery = String.format("CALL update_status('%s', '%s', '%s');",
                 authorization, invoiceId, status);
-        return DAOManager.getStatement().executeUpdate(changeStatusQuery);
+        Statement statement = DAOManager.getStatement();
+        int rows = statement.executeUpdate(changeStatusQuery);
+        // Closing the connection
+        Connection connection = statement.getConnection();
+        statement.close();
+        connection.close();
+        return rows;
+    }
+
+    /**
+     * Change delivery date of an invoice
+     *
+     * @param authorization User's auth token
+     * @param invoiceId     Invoice ID
+     * @param deliveryDate  New delivery date
+     * @return Number of rows affected
+     * @throws SQLException Error while changing delivery date
+     */
+    int changeDeliveryDate(String authorization, String invoiceId, String deliveryDate) throws SQLException {
+        DAOManager.reset();
+        String changeDeliveryDateQuery = String.format("CALL update_delivery_date('%s', '%s', '%s');",
+                authorization, invoiceId, deliveryDate);
+        Statement statement = DAOManager.getStatement();
+        int rows = statement.executeUpdate(changeDeliveryDateQuery);
+        // Closing the connection
+        Connection connection = statement.getConnection();
+        statement.close();
+        connection.close();
+        return rows;
+    }
+
+    /**
+     * Change payment date of an invoice
+     *
+     * @param authorization User's auth token
+     * @param invoiceId     Invoice ID
+     * @param paymentDate  New payment date
+     * @return Number of rows affected
+     * @throws SQLException Error while changing payment date
+     */
+    int changePaymentDate(String authorization, String invoiceId, String paymentDate) throws SQLException {
+        DAOManager.reset();
+        String changePaymentDateQuery = String.format("CALL update_payment_date('%s', '%s', '%s');",
+                authorization, invoiceId, paymentDate);
+        Statement statement = DAOManager.getStatement();
+        int rows = statement.executeUpdate(changePaymentDateQuery);
+        // Closing the connection
+        Connection connection = statement.getConnection();
+        statement.close();
+        connection.close();
+        return rows;
     }
 
     /**
@@ -129,9 +183,15 @@ public class InvoiceDAO {
      */
     int changeDriver(String authorization, String invoiceId, String driver) throws SQLException {
         DAOManager.reset();
-        String changeStatusQuery = String.format("CALL update_driver('%s', '%s', '%s');",
+        String changeDriverQuery = String.format("CALL update_driver('%s', '%s', '%s');",
                 authorization, invoiceId, driver);
-        return DAOManager.getStatement().executeUpdate(changeStatusQuery);
+        Statement statement = DAOManager.getStatement();
+        int rows = statement.executeUpdate(changeDriverQuery);
+        // Closing the connection
+        Connection connection = statement.getConnection();
+        statement.close();
+        connection.close();
+        return rows;
     }
 
 }

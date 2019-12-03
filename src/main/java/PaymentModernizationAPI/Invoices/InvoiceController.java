@@ -112,4 +112,34 @@ public class InvoiceController {
         return invoiceService.changeDriver(authorization, invoiceId, driverMap.get("newDriver").get(0));
     }
 
+    /**
+     * Update delivery date of an existing invoice
+     *
+     * @param authorization   User's auth token
+     * @param deliveryDateMap Delivery date information
+     * @param invoiceId       Invoice ID
+     * @return Whether delivery date change was successful or not
+     */
+    @RequestMapping(value = "/update-delivery-date/{invoiceId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String changeDeliveryDate(@RequestHeader(value = "Authorization") String authorization,
+                                     @RequestBody MultiValueMap<String, String> deliveryDateMap,
+                                     @PathVariable(value = "invoiceId") String invoiceId) {
+        return invoiceService.changeDeliveryDate(authorization, invoiceId, deliveryDateMap.get("newDeliveryDate").get(0));
+    }
+
+    /**
+     * Update payment date of an existing invoice
+     *
+     * @param authorization  User's auth token
+     * @param paymentDateMap Delivery date information
+     * @param invoiceId      Invoice ID
+     * @return Whether payment date change was successful or not
+     */
+    @RequestMapping(value = "/update-payment-date/{invoiceId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String changePaymentDate(@RequestHeader(value = "Authorization") String authorization,
+                                    @RequestBody MultiValueMap<String, String> paymentDateMap,
+                                    @PathVariable(value = "invoiceId") String invoiceId) {
+        return invoiceService.changePaymentDate(authorization, invoiceId, paymentDateMap.get("newPaymentDate").get(0));
+    }
+
 }

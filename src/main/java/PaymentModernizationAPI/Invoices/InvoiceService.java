@@ -203,6 +203,50 @@ public class InvoiceService {
     }
 
     /**
+     * Change the delivery date of an invoice
+     *
+     * @param authorization User's auth token
+     * @param invoiceId     Invoice ID
+     * @param deliveryDate  New delivery date
+     * @return Whether the delivery date update was successful or not
+     */
+    String changeDeliveryDate(String authorization, String invoiceId, String deliveryDate) {
+        JSONObject changedJSON = new JSONObject();
+        changedJSON.put("isValid", false);
+        // Changing the status
+        try {
+            if (invoiceDAO.changeDeliveryDate(authorization, invoiceId, deliveryDate) > 0) {
+                changedJSON.put("isValid", true);
+            }
+        } catch (Exception e) {
+            changedJSON.put("isValid", false);
+        }
+        return changedJSON.toString();
+    }
+
+    /**
+     * Change the payment date of an invoice
+     *
+     * @param authorization User's auth token
+     * @param invoiceId     Invoice ID
+     * @param paymentDate   New payment date
+     * @return Whether the payment date update was successful or not
+     */
+    String changePaymentDate(String authorization, String invoiceId, String paymentDate) {
+        JSONObject changedJSON = new JSONObject();
+        changedJSON.put("isValid", false);
+        // Changing the status
+        try {
+            if (invoiceDAO.changePaymentDate(authorization, invoiceId, paymentDate) > 0) {
+                changedJSON.put("isValid", true);
+            }
+        } catch (Exception e) {
+            changedJSON.put("isValid", false);
+        }
+        return changedJSON.toString();
+    }
+
+    /**
      * Return all invoice information from the given ResultSet as a JSONArray
      *
      * @param invoices ResultSet containing invoices
