@@ -45,6 +45,7 @@ public class SignupDAO {
                 company.getAuthToken(), company.getName(), company.getType().toString(), bankInfo.getAccountNum(),
                 bankInfo.getCardNum(), bankInfo.getBank().toString(), address.getStreetAddress(), address.getCity(),
                 address.getRegion(), address.getCountry(), address.getPostalCode());
+        System.out.println(signupQuery);
         return DAOManager.getStatement().executeUpdate(signupQuery);
     }
 
