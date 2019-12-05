@@ -56,7 +56,6 @@ public class SignupController {
         String name = companyMap.get("name").get(0);
         User.UserTypes type = User.UserTypes.valueOf(companyMap.get("type").get(0));
         String accountNum = companyMap.get("accountNum").get(0);
-        String cardNum = companyMap.get("cardNum").get(0);
         BankInformation.Banks bank = BankInformation.Banks.valueOf(companyMap.get("bank").get(0));
         String streetAddress = companyMap.get("streetAddress").get(0);
         String city = companyMap.get("city").get(0);
@@ -64,7 +63,7 @@ public class SignupController {
         String country = companyMap.get("country").get(0);
         String postalCode = companyMap.get("postalCode").get(0);
         // Create a company and try to sign them up
-        BankInformation bankInfo = new BankInformation(accountNum, cardNum, bank);
+        BankInformation bankInfo = new BankInformation(accountNum, null, bank);
         Address address = new Address(streetAddress, city, region, country, postalCode);
         Company company = new Company(username, password, name, type, bankInfo, address);
         return signupService.signupUser(company);
