@@ -174,9 +174,11 @@ public class InvoiceService {
                     changedJSON.put("isValid", true);
                 }
             } catch (Exception e) {
+                System.out.println(e.getMessage());
                 changedJSON.put("isValid", false);
             }
         }
+        System.out.println(changedJSON.toString());
         return changedJSON.toString();
     }
 
