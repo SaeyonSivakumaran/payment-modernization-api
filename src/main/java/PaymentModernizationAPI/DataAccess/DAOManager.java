@@ -41,12 +41,12 @@ public class DAOManager {
      * @throws SQLException Error while removing closed connections
      */
     public static void reset() throws SQLException {
-        Iterator<Connection> iterator = connections.iterator();
+        /*Iterator<Connection> iterator = connections.iterator();
         while(iterator.hasNext()){
             if(iterator.next().isClosed()){
                 iterator.remove();
             }
-        }
+        }*/
     }
 
 }
